@@ -11,7 +11,7 @@ const __currFilename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__currFilename);
 
 export const readJsonData = (fileName) => {
-    const filePath = `./data/${fileName}.json`;
+    const filePath = `../data/${fileName}.json`;
 
     // Use __dirname to get the absolute path of the current directory
     try {
