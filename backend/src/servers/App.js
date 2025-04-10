@@ -2,6 +2,13 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
+// importing routers
+import teamRouter from '../routers/team.routes.js';
+
+//importing middlewares
+import { errorHandlerMiddleware } from '../middleware/errorHandalerMiddleware.js';
+import { invalidRoutesHandlerMiddleware } from '../middleware/invalidRoutesMiddleware.js';
+
 // crating server instance
 export const App = express();
 
@@ -25,3 +32,11 @@ App.get("/", (req, res) => {
 });
 
 
+// setup routes
+App.use("/api/team", teamRouter);
+
+// setup invalid routes handler middleware
+App.use(invalidRoutesHandlerMiddleware);
+
+// setup error handler middleware
+App.use(errorHandlerMiddleware);

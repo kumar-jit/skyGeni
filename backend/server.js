@@ -1,4 +1,4 @@
-import { App } from "./src/servers/index.js";
+import { App } from "./src/servers/App.js";
 
 // setup port no
 const PORT = process.env.PORT || 8100;
