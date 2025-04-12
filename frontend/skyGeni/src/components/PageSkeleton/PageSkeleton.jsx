@@ -1,5 +1,8 @@
 import { Box, Card, CardContent, CardHeader, Grid, Typography } from "@mui/material";
 import BarChartCard from "../cards/BarChartCard";
+
+import DonutChartCard from "../cards/DonutChartCard";
+import Legend from "../Legend/Legend";
 import DonutChart from "../DonutChart/DonutChart";
 
 const PageSkeleton = (props) => {
@@ -12,7 +15,7 @@ const PageSkeleton = (props) => {
                 <span>{`Won ACV mix by ${heading}`}</span>
                     </Typography>
                 <Grid container spacing={2}>
-                    <Grid display="flex" justifyContent="start" size={7}>
+                    <Grid display="flex" justifyContent="start"  size={{ md: 7 }}>
                         <BarChartCard
                             barChartData={barChartData}
                             collerPalette={collerPalette}
@@ -20,9 +23,11 @@ const PageSkeleton = (props) => {
                             height={height.barChart}
                         />
                     </Grid>
-
-                    <Grid display="flex" justifyContent="center" size={5}>
-                        <DonutChart chartData={doughnutChartData} collerPalette={collerPalette}></DonutChart>
+                    <Grid display="flex" justifyContent="center" alignItems="start" size={{ md: 5 }}>
+                        <DonutChart donutChartData={doughnutChartData} collerPalette={collerPalette} height={height.donutChart} width={width.donutChart}/> 
+                    </Grid>
+                    <Grid display="flex" justifyContent="center" alignItems="start" size={{ md: 12 }}> 
+                        <Legend collerPalette={collerPalette}></Legend>
                     </Grid>
 
                     <Grid>{/* Optional additional content */}</Grid>

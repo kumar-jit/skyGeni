@@ -9,10 +9,12 @@ const CustomerType = (props) => {
     let width = {
         barChart: 800,
         card: 400,
+        donutChart: 550
     };
     let height = {
         barChart: 400,
         card: 400,
+        donutChart: 400
     };
     useEffect(() => {
         inittialDataLoad();

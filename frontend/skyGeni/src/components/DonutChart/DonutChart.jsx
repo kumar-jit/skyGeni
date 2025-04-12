@@ -2,15 +2,15 @@ import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { formatCurrency } from "../../utils/currencyFormater";
 const DonutChart = ({
-    chartData,
+    donutChartData,
     collerPalette,
     width = 500,
-    height = 500,
+    height = 430,
 }) => {
     const svgRef = useRef();
 
     useEffect(() => {
-        if (!chartData?.data || chartData.data.length === 0) return;
+        if (!donutChartData?.data || donutChartData.data.length === 0) return;
 
         const svg = d3.select(svgRef.current);
         svg.selectAll("*").remove();
@@ -44,13 +44,13 @@ const DonutChart = ({
             .sort(null);
         const arc = d3
             .arc()
-            .innerRadius(radius * 0.2)
-            .outerRadius(radius * 0.4);
+            .innerRadius(radius * 0.3)
+            .outerRadius(radius * 0.55);
         const outerArc = d3
             .arc()
-            .innerRadius(radius * 0.4)
+            .innerRadius(radius * 0.5)
             .outerRadius(radius * 0.75);
-        const arcs = pie(chartData.data);
+        const arcs = pie(donutChartData.data);
 
         //custom colors
         const color = (d) => collerPalette[d.name] || "#999";
@@ -173,12 +173,12 @@ const DonutChart = ({
             .style("font-size", "16px")
             .style("font-family", "Roboto")
             .style("fill", "#555")
-            .text(`${formatCurrency(chartData.totalAcv)}`);
+            .text(`${formatCurrency(donutChartData.totalAcv)}`);
 
         return () => tooltip.remove();
-    }, [chartData, width, height]);
+    }, [donutChartData, width, height]);
 
-    return <svg ref={svgRef}></svg>;
+    return <svg ref={svgRef} width={width} height={height}></svg>;
 };
 
 export default DonutChart;
