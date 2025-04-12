@@ -5,14 +5,16 @@ import { acvRangeReducerInitialLoadThunk } from "../redux/reducers/AcvRangeReduc
 import PageSkeleton from "../components/PageSkeleton/PageSkeleton";
 
 const AcvRange = (props) => {
-    const { barChartData, inittialDataLoad, collerPalette } = props;
+    const { barChartData, inittialDataLoad, collerPalette,doughnutChartData } = props;
     let width = {
         barChart: 800,
         card: 400,
+        donutChart: 550
     };
     let height = {
         barChart: 400,
         card: 400,
+        donutChart: 400
     };
     useEffect(() => {
         inittialDataLoad();
@@ -22,6 +24,7 @@ const AcvRange = (props) => {
         <PageSkeleton
             barChartData={barChartData}
             collerPalette={collerPalette}
+            doughnutChartData={doughnutChartData}
             width={width}
             height={height}
             heading="ACV Range"
@@ -32,6 +35,7 @@ const AcvRange = (props) => {
 const mapStateToProps = (state) => ({
     barChartData: state.acvRangeReducer?.barChartData,
     collerPalette: state.acvRangeReducer.collerPalette,
+    doughnutChartData: state.acvRangeReducer.doughnutChartData,
 });
 const mapDispatchToProps = (dispatch) => ({
     inittialDataLoad: () => dispatch(acvRangeReducerInitialLoadThunk()),

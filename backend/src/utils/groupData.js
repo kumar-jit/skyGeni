@@ -101,5 +101,40 @@ export const groupQuarterDataForChart = (data, xAxisName, yAxisName) =>{
         total: parseFloat(total.toFixed(2))
       };
     });
+}
+
+export const groupQuarterDataForDoughnut = (data, groupedFieldName, metricField) => {
+    const result = {
+      totalAcv: 0,
+      data: []
+    };
+  
+    const groupedMap = {};
+  
+    // Step 1: Group and Sum the calculatedValue
+    data.forEach(item => {
+      const key = item[groupedFieldName];
+      const value = Math.round(item[metricField]) || 0;
+  
+      if (!groupedMap[key]) {
+        groupedMap[key] = 0;
+      }
+  
+      groupedMap[key] += value;
+      result.totalAcv += value;
+    });
+  
+    // Step 2: Prepare data with percentage
+    for (const [name, acv] of Object.entries(groupedMap)) {
+      const percentage = Math.round(result.totalAcv ? (acv / result.totalAcv) * 100 : 0);
+  
+      result.data.push({
+        name,
+        acv,
+        percentage: percentage //Number(percentage.toFixed(2))
+      });
+    }
+  
+    return result;
   }
   

@@ -1,6 +1,6 @@
 import express from "express";
 
-import { teamBarChartController,getCollerPaletteController } from "../controller/team.controller.js";
+import { teamBarChartController,getCollerPaletteController,teamDoughnutController } from "../controller/team.controller.js";
 
 const teamRouter = express.Router();
 
@@ -8,4 +8,5 @@ const teamRouter = express.Router();
 // to get table data
 teamRouter.route("/barChart").get(teamBarChartController);
 teamRouter.route("/collerPalette").get(getCollerPaletteController);
+teamRouter.route("/doughnutChart").get(teamDoughnutController);
 export default teamRouter;
