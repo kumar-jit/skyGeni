@@ -1,0 +1,30 @@
+{
+    "accountIndustry": {
+        "Manufacturing": "#1f77b4",
+        "Transportation": "#ff7f0e",
+        "Wholesalers": "#2ca02c",
+        "Tecnology Svcs": "#d62728",
+        "Retail": "#9467bd",
+        "Financial Svcs": "#8c564b",
+        "Education": "#e377c2",
+        "Others": "#f0027f"
+    },
+     "acvRange" :{
+        "<$20K": "#1f77b4",
+        "$20K - 50K": "#ff7f0e",
+        "$50K - 100K": "#2ca02c",
+        "$100K - 200K": "#d62728",
+        ">=$200K": "#9467bd"
+    },
+    "customerType": {
+        "Existing Customer": "#1f77b4",
+        "New Customer": "#ff7f0e"
+    },
+    "team": {
+        "Asia Pac": "#1f77b4",
+        "Enterprise": "#ff7f0e",
+        "Europe": "#2ca02c",
+        "Latin America": "#d62728",
+        "North America": "#9467bd"
+    }
+}
