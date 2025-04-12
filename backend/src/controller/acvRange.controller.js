@@ -1,10 +1,11 @@
-import { accountIndusGetAllDataRepo,accountIndusColorPaletteRepo } from "../model/accountIndustry.repository.js";
+import { acvRangeGetAllDataRepo,acvRangeColorPaletteRepo } from "../model/acvRange.repository.js";
 import { groupQuarterDataForChart } from "../utils/groupData.js";
 
-export const accountIndustryBarChartController = async (req, res, next) => {
+
+export const acvRangeBarChartController = async (req, res, next) => {
     try {
-        const data = await accountIndusGetAllDataRepo();
-        const groupedData = groupQuarterDataForChart(data, "closed_fiscal_quarter", "Acct_Industry"); 
+        const data = await acvRangeGetAllDataRepo();
+        const groupedData = groupQuarterDataForChart(data, "closed_fiscal_quarter", "ACV_Range"); 
         res.status(200).json({success : true, data: groupedData, url: req.originalUrl});
     } catch (error) {
         next(error);
@@ -13,10 +14,9 @@ export const accountIndustryBarChartController = async (req, res, next) => {
 
 export const getCollerPaletteController = async (req, res, next) => {
     try {
-        const data = await accountIndusColorPaletteRepo();
+        const data = await acvRangeColorPaletteRepo();
         res.status(200).json({success : true, data: data, url: req.originalUrl});
     } catch (error) {
         next(error);
     }
 }
-

@@ -4,10 +4,14 @@ import cors from 'cors';
 
 // importing routers
 import teamRouter from '../routers/team.routes.js';
+import customerTypeRouter from '../routers/customerType.routes.js';
+import acvRangeTypeRouter from '../routers/acvRange.routes.js';
+import accountIndTypeRouter from '../routers/accountIndustry.routes.js';
 
 //importing middlewares
 import { errorHandlerMiddleware } from '../middleware/errorHandalerMiddleware.js';
 import { invalidRoutesHandlerMiddleware } from '../middleware/invalidRoutesMiddleware.js';
+
 
 // crating server instance
 export const App = express();
@@ -18,7 +22,7 @@ dotenv.config();
 // setup cors options
 const corsOptions = {
     origin: process.env.CORS_ORIGIN || '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 };
 App.use(cors(corsOptions));
@@ -34,6 +38,11 @@ App.get("/", (req, res) => {
 
 // setup routes
 App.use("/api/team", teamRouter);
+App.use("/api/customer", customerTypeRouter);
+App.use("/api/acvRange", acvRangeTypeRouter);
+App.use("/api/account", accountIndTypeRouter);
+
+
 
 // setup invalid routes handler middleware
 App.use(invalidRoutesHandlerMiddleware);
