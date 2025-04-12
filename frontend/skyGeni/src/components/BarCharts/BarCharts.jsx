@@ -13,6 +13,23 @@ const BarChart = ({data, collerPalette, widthP, heightP}) => {
 
         const margin = { top: 30, right: 20, bottom: 50, left: 70 };
 
+        // === Tooltip element ===
+        const tooltip = d3
+            .select("body")
+            .append("div")
+            .attr("class", "d3-tooltip")
+            .style("position", "absolute")
+            .style("background", "#fff")
+            .style("border", "1px solid #ccc")
+            .style("padding", "8px 10px")
+            .style("border-radius", "4px")
+            .style("pointer-events", "none")
+            .style("opacity", 0)
+            .style("font-size", "12px")
+            .style("font-family", "Roboto")
+            .style("color", "#333")
+            .style("box-shadow", "0 2px 6px rgba(0,0,0,0.15)");
+
         const x = d3
             .scaleBand()
             .domain(stackedData.map((d) => d.quarter))
@@ -46,6 +63,7 @@ const BarChart = ({data, collerPalette, widthP, heightP}) => {
             .data(stackedData)
             .join("g")
             .attr("transform", (d) => `translate(${x(d.quarter)},0)`)
+            .style("font-family", "Roboto")
             .each(function (d) {
                 const g = d3.select(this);
                 let yOffset = y(0);
@@ -59,9 +77,25 @@ const BarChart = ({data, collerPalette, widthP, heightP}) => {
                         .attr("y", yOffset)
                         .attr("height", barHeight)
                         .attr("width", x.bandwidth())
-                        .attr("fill", collerPalette[entry.name]);
+                        .attr("fill", collerPalette[entry.name]).on("mouseover", () => {
+                            tooltip.transition().duration(200).style("opacity", 1);
+                        })
+                        .on("mousemove", (event) => {
+                            tooltip
+                                .html(`
+                                    <strong>${entry.name}</strong><br/>
+                                    ACV: ${formatCurrency(entry.acv)}<br/>
+                                    Percentage: ${entry.persentage}%<br/>
+                                `)
+                                .style("left", (event.pageX + 10) + "px")
+                                .style("top", (event.pageY - 28) + "px");
+                        })
+                        .on("mouseout", () => {
+                            tooltip.transition().duration(300).style("opacity", 0);
+                        });
 
                     // Label inside segment
+                    if (barHeight > 14)
                     g.append("text")
                         .attr("x", x.bandwidth() / 2)
                         .attr("y", yOffset + barHeight / 2)
@@ -100,26 +134,6 @@ const BarChart = ({data, collerPalette, widthP, heightP}) => {
             .attr("transform", `translate(${margin.left},0)`)
             .call(d3.axisLeft(y).tickFormat((d) => `$${formatDollar(d)}`));
 
-        // Legend for Teams
-        const legend = svg
-            .append("g")
-            .attr("transform", `translate(${margin.left},${height})`);
-        Object.keys(collerPalette).forEach((name, i) => {
-            legend
-                .append("rect")
-                .attr("x", i * 140)
-                .attr("y", 10)
-                .attr("width", 15)
-                .attr("height", 15)
-                .attr("fill", collerPalette[name]);
-
-            legend
-                .append("text")
-                .attr("x", i * 140 + 20)
-                .attr("y", 22)
-                .text(name)
-                .style("font-size", "12px");
-        }   );
     }, [data]);
 
     return <svg ref={ref} width={width} height={height}></svg>;

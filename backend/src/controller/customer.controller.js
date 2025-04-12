@@ -1,5 +1,5 @@
 import { customerGetAllDataRepo,CustomerColorPaletteRepo } from "../model/customer.repository.js";
-import { groupQuarterDataForChart } from "../utils/groupData.js";
+import { groupQuarterDataForChart, groupQuarterDataForDoughnut } from "../utils/groupData.js";
  
 export const customerBarChartController = async (req, res, next) => {
     try {
@@ -11,6 +11,15 @@ export const customerBarChartController = async (req, res, next) => {
     }
 }
 
+export const customerBarChartDoughnutController = async (req, res, next) => {
+    try {
+        const data = await customerGetAllDataRepo();
+        const groupedData = groupQuarterDataForDoughnut(data, "Cust_Type", "acv");
+        res.status(200).json({success : true, data: groupedData, url: req.originalUrl});
+    } catch (error) {
+        next(error);
+    }
+}
 
 export const getCollerPaletteController = async (req, res, next) => {
     try {
