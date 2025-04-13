@@ -1,4 +1,4 @@
-# Project Name
+# skyGeni
 
 ## Overview
 This project consists of a **backend** built with **Node.js** (Express) and a **frontend** built with **Vue.js** (Vite).
