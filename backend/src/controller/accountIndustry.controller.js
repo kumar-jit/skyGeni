@@ -1,6 +1,12 @@
 import { accountIndusGetAllDataRepo,accountIndusColorPaletteRepo } from "../model/accountIndustry.repository.js";
 import { groupQuarterDataForChart,groupQuarterDataForDoughnut, groupQuarterDataForTable } from "../utils/groupData.js";
 
+/**
+ * @description This function is used to get the account industry bar chart data.
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 export const accountIndustryBarChartController = async (req, res, next) => {
     try {
         const data = await accountIndusGetAllDataRepo();
@@ -11,6 +17,12 @@ export const accountIndustryBarChartController = async (req, res, next) => {
     }
 }
 
+/**
+ * @description This function is used to get the account industry doughnut chart data.
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 export const accountIndustryDoughnutController = async (req, res, next) => {
     try {
         const data = await accountIndusGetAllDataRepo();
@@ -21,6 +33,12 @@ export const accountIndustryDoughnutController = async (req, res, next) => {
     }
 }
 
+/**
+ * @description This function is used to get the account industry table data.
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 export const accountIndustryTableInfoController = async (req, res, next) => {
     try {
         const data = await accountIndusGetAllDataRepo();
@@ -31,6 +49,12 @@ export const accountIndustryTableInfoController = async (req, res, next) => {
     }
 }
 
+/**
+ * @description This function is used to get the account industry color palette data.
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 export const getCollerPaletteController = async (req, res, next) => {
     try {
         const data = await accountIndusColorPaletteRepo();
@@ -39,5 +63,6 @@ export const getCollerPaletteController = async (req, res, next) => {
         next(error);
     }
 }
+
 
 

@@ -2,6 +2,12 @@
 import { teamGetAllDataRepo,teamColorPaletteRepo } from "../model/team.repository.js";
 import { groupQuarterDataForChart, groupQuarterDataForDoughnut, groupQuarterDataForTable } from "../utils/groupData.js";
 
+/**
+ * @description This function is used to get the team bar chart data.
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 export const teamBarChartController = async (req, res, next) => {
     try {
         const data = await teamGetAllDataRepo();
@@ -12,6 +18,12 @@ export const teamBarChartController = async (req, res, next) => {
     }
 }
 
+/**
+ * @description This function is used to get the team bar chart data.
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 export const teamDoughnutController = async (req, res, next) => {
     try {
         const data = await teamGetAllDataRepo();
@@ -21,6 +33,12 @@ export const teamDoughnutController = async (req, res, next) => {
         next(error);
     }
 }
+/**
+ * @description This function is used to get the team bar chart data.
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 export const teamTableInfoController = async (req, res, next) => {
     try {
         const data = await teamGetAllDataRepo();
@@ -31,6 +49,12 @@ export const teamTableInfoController = async (req, res, next) => {
     }
 }
 
+/**
+ * @description This function is used to get the team bar chart data.
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 export const getCollerPaletteController = async (req, res, next) => {
     try {
         const data = await teamColorPaletteRepo();
