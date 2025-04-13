@@ -50,6 +50,7 @@ const Legend = ({collerPalette}) => {
     });
     tempSvg.remove();
 
+    // Calculate total width of the legend
     const totalWidth = textWidths.reduce((sum, width) => sum + boxSize + 8 + width + itemPadding, 0);
 
     const svg = container.append("svg")

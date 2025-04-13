@@ -6,8 +6,9 @@ import { useState } from "react";
 import { handleCopy } from "../../utils/handleTableDataCopy";
 
 export function TableDataCopyButton({ tableData }) {
-    const [showCopied, setShowCopied] = useState(false);
+    const [showCopied, setShowCopied] = useState(false); // State to manage the copy button text
 
+    // Function to handle the copy button click
     const handleCopyClick = () => {
         const mesg = handleCopy(tableData);
         if (mesg.success) {
@@ -22,7 +23,7 @@ export function TableDataCopyButton({ tableData }) {
     return (
         <Box display="flex" justifyContent="flex-end" mb={1}>
             <Button variant="text" size="small" onClick={() => handleCopyClick()}>
-                {showCopied ? "Copied!" : <ContentCopyIcon fontSize="small" />}
+                {showCopied ? "Copied!" : <ContentCopyIcon fontSize="small" />} 
             </Button>
         </Box>
     );

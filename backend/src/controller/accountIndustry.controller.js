@@ -64,5 +64,21 @@ export const getCollerPaletteController = async (req, res, next) => {
     }
 }
 
-
+export const getAllData = async (req, res, next) => {
+    try {
+        const data = await accountIndusGetAllDataRepo();
+        const barChartData = groupQuarterDataForChart(data, "closed_fiscal_quarter", "Acct_Industry");
+        const doughnutData = groupQuarterDataForDoughnut(data, "Acct_Industry", "acv");
+        const tableData = groupQuarterDataForTable(data, "closed_fiscal_quarter", "Acct_Industry", "Acc Industry");
+        const collerPalette = await accountIndusColorPaletteRepo();
+        res.status(200).json({success : true, data: {
+            barChartData,
+            doughnutData,
+            tableData,
+            collerPalette
+        }, url: req.originalUrl});
+    } catch (error) {
+        next(error);
+    }
+}
 

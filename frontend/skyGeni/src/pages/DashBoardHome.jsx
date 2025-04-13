@@ -1,14 +1,18 @@
-import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
+import { useEffect, useState, useMemo, useCallback } from "react";
+import { connect } from "react-redux";
 
-import CustomerType from "./CustomerType";
 import CustomTabPanel from "../components/CustomTabPanel/CustomTabPanel";
-import AccountIndus from "./AccountIndus";
-import AcvRange from "./AcvRange";
-import Team from "./Team";
+import PageSkeleton from "../components/PageSkeleton/PageSkeleton";
 
+import {
+    loadInitialDataThunk,
+    chartsDataLoadThunk,
+} from "../redux/reducers/dashBoardReducer";
+
+// Accessible props for tab panels
 function a11yProps(index) {
     return {
         id: `simple-tab-${index}`,
@@ -16,41 +20,105 @@ function a11yProps(index) {
     };
 }
 
-function DashBoardHome() {
-    const [value, setValue] = React.useState(0);
+function DashBoardHome({
+    tabs,
+    inittialDataLoad,
+    barChartData,
+    doughnutChartData,
+    tableData,
+    collerPalette,
+    chartsDataLoad,
+}) {
+    const [value, setValue] = useState(0);
+    const [width] = useState({
+        barChart: 800,
+        card: 400,
+        donutChart: 550,
+    });
+    const [height] = useState({
+        barChart: 400,
+        card: 400,
+        donutChart: 400,
+    });
 
-    const handleChange = (event, newValue) => {
+    // Load tabs initially
+    useEffect(() => {
+        inittialDataLoad();
+    }, [inittialDataLoad]);
+
+    // Fetch chart data when the active tab changes
+    useEffect(() => {
+        if (tabs?.[value]) {
+            const selectedTabKey = tabs[value].path;
+            chartsDataLoad(selectedTabKey);
+        }
+    }, [value, tabs, chartsDataLoad]);
+
+    // Memoized tab change handler
+    const handleChange = useCallback((event, newValue) => {
         setValue(newValue);
-    };
+    }, []);
+
+    // Memoized tabs rendering
+    const tabHeaders = useMemo(() => (
+        <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="Dashboard Tabs"
+        >
+            {tabs?.map((tab, index) => (
+                <Tab
+                    key={tab.key}
+                    label={tab.name}
+                    {...a11yProps(index)}
+                />
+            ))}
+        </Tabs>
+    ), [tabs, value, handleChange]);
+
+    // Memoized tab panels
+    const tabPanels = useMemo(() => (
+        tabs?.map((tab, index) => (
+            <CustomTabPanel
+                key={tab.key}
+                value={value}
+                index={index}
+                path={tab.path}
+            >
+                <PageSkeleton
+                    barChartData={barChartData}
+                    doughnutChartData={doughnutChartData}
+                    tableData={tableData}
+                    collerPalette={collerPalette}
+                    width={width}
+                    height={height}
+                    heading={tab.name}
+                />
+            </CustomTabPanel>
+        ))
+    ), [tabs, value, barChartData, doughnutChartData, tableData, collerPalette, width, height]);
 
     return (
         <Box sx={{ width: "100%" }}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="Dashboard Tabs"
-                >
-                    <Tab label="Customer Types" {...a11yProps(0)} />
-                    <Tab label="Teams" {...a11yProps(1)} />
-                    <Tab label="Acv Rang" {...a11yProps(2)} />
-                    <Tab label="Account Industry" {...a11yProps(3)} />
-                </Tabs>
+                {tabHeaders}
             </Box>
-            <CustomTabPanel value={value} index={0}>
-                <CustomerType />
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={1}>
-                <Team />
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={2}>
-                <AcvRange />
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={3}>
-                <AccountIndus />
-            </CustomTabPanel>
+            {tabPanels}
         </Box>
     );
 }
 
-export default DashBoardHome;
+const mapStateToProps = (state) => ({
+    tabs: state.dashBoardReducer?.tabs,
+    barChartData: state.dashBoardReducer?.barChartData,
+    collerPalette: state.dashBoardReducer.collerPalette,
+    doughnutChartData: state.dashBoardReducer.doughnutChartData,
+    tableData: state.dashBoardReducer.tableData,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    inittialDataLoad: () => dispatch(loadInitialDataThunk()),
+    chartsDataLoad: (path) => dispatch(chartsDataLoadThunk(path)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DashBoardHome);
