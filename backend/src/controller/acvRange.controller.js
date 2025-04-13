@@ -1,5 +1,5 @@
 import { acvRangeGetAllDataRepo,acvRangeColorPaletteRepo } from "../model/acvRange.repository.js";
-import { groupQuarterDataForChart, groupQuarterDataForDoughnut } from "../utils/groupData.js";
+import { groupQuarterDataForChart, groupQuarterDataForDoughnut, groupQuarterDataForTable } from "../utils/groupData.js";
 
 
 export const acvRangeBarChartController = async (req, res, next) => {
@@ -15,6 +15,16 @@ export const acvRangeDoughnutController = async (req, res, next) => {
     try {
         const data = await acvRangeGetAllDataRepo();
         const groupedData = groupQuarterDataForDoughnut(data, "ACV_Range", "acv");
+        res.status(200).json({success : true, data: groupedData, url: req.originalUrl});
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const acvRangeTableInfoController = async (req, res, next) => {
+    try {
+        const data = await acvRangeGetAllDataRepo();
+        const groupedData = groupQuarterDataForTable(data, "closed_fiscal_quarter", "ACV_Range", "ACV Range");
         res.status(200).json({success : true, data: groupedData, url: req.originalUrl});
     } catch (error) {
         next(error);

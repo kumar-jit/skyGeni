@@ -10,6 +10,12 @@ import { ErrorHandler } from './customeErrorHandler.js';
 const __currFilename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__currFilename);
 
+/**
+ * Reads a JSON file synchronously and returns the parsed data.
+ * @param {string} fileName - The name of the JSON file (without extension).
+ * @returns {Object} - The parsed JSON data.
+ * @throws {ErrorHandler} - Throws an error if the file cannot be read or parsed.
+ */
 export const readJsonData = (fileName) => {
     const filePath = `../data/${fileName}.json`;
 

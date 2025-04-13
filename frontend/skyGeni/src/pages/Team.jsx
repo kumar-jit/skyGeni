@@ -6,7 +6,7 @@ import { teamReducerInitialLoadThunk } from "../redux/reducers/TeamReducer";
 import PageSkeleton from "../components/PageSkeleton/PageSkeleton";
 
 const Team = (props) => {
-    const { barChartData, inittialDataLoad, collerPalette,doughnutChartData } = props;
+    const { barChartData, inittialDataLoad, collerPalette,doughnutChartData,tableData } = props;
     let width = {
         barChart: 800,
         card: 400,
@@ -29,6 +29,7 @@ const Team = (props) => {
             width={width}
             height={height}
             heading="Team"
+            tableData={tableData}
         />
     );
 };
@@ -37,6 +38,7 @@ const mapStateToProps = (state) => ({
     barChartData: state.teamReducer?.barChartData,
     collerPalette: state.teamReducer.collerPalette,
     doughnutChartData: state.teamReducer.doughnutChartData,
+    tableData: state.teamReducer.tableData,
 });
 const mapDispatchToProps = (dispatch) => ({
     inittialDataLoad: () => dispatch(teamReducerInitialLoadThunk()),

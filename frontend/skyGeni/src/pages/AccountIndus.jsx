@@ -6,7 +6,7 @@ import { accountIndusReducerInitialLoadThunk } from "../redux/reducers/AccountIn
 import PageSkeleton from "../components/PageSkeleton/PageSkeleton.jsx";
 
 const AccountIndus = (props) => {
-    const { barChartData, inittialDataLoad, collerPalette, doughnutChartData } = props;
+    const { barChartData, inittialDataLoad, collerPalette, doughnutChartData,tableData } = props;
     let width = {
         barChart: 800,
         card: 400,
@@ -28,7 +28,8 @@ const AccountIndus = (props) => {
             doughnutChartData={doughnutChartData}
             width={width}
             height={height}
-            heading="Acc Indus"
+            heading="Acc Industry"
+            tableData={tableData}
         />
     );
 };
@@ -37,6 +38,7 @@ const mapStateToProps = (state) => ({
     barChartData: state.accountIndusReducer?.barChartData,
     collerPalette: state.accountIndusReducer.collerPalette,
     doughnutChartData: state.accountIndusReducer.doughnutChartData,
+    tableData: state.accountIndusReducer.tableData,
 });
 const mapDispatchToProps = (dispatch) => ({
     inittialDataLoad: () => dispatch(accountIndusReducerInitialLoadThunk()),
