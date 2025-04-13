@@ -63,3 +63,27 @@ export const getCollerPaletteController = async (req, res, next) => {
         next(error);
     }
 }
+
+/**
+ * @description This function is used to get all the data for the team.
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+export const getAllData = async (req, res, next) => {
+    try {
+        const data = await teamGetAllDataRepo();
+        const barChartData = groupQuarterDataForChart(data, "closed_fiscal_quarter", "Team"); 
+        const doughnutData = groupQuarterDataForDoughnut(data, "Team", "acv");
+        const tableData = groupQuarterDataForTable(data, "closed_fiscal_quarter", "Team", "Team");
+        const collerPalette = await teamColorPaletteRepo();
+        res.status(200).json({success : true, data: {
+            barChartData,
+            doughnutData,
+            tableData,
+            collerPalette
+        }, url: req.originalUrl});
+    } catch (error) {
+        next(error);
+    }
+}

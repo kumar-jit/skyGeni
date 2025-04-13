@@ -61,6 +61,12 @@ export const getCollerPaletteController = async (req, res, next) => {
     }
 }
 
+/**
+ * @description This function is used to get all the data for the customer.
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 export const getAllData = async (req, res, next) => {
     try {
         const data = await customerGetAllDataRepo();
