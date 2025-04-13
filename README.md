@@ -5,12 +5,6 @@ This project consists of a **backend** built with **Node.js** (Express) and a **
 
 The **backend** runs on port `8100` and the **frontend** runs on port `5173`.
 
-## Backend Setup
-
-### 1. Clone the repository
-```bash
-git clone https://github.com/your-username/your-repository-name.git
-cd your-repository-name
 
 ## Screen Shot
 ### Team
@@ -24,3 +18,11 @@ cd your-repository-name
 
 ### Account Industry
 ![image](https://github.com/user-attachments/assets/9b91a1e5-bd29-4577-8493-6a4ffc41a56d)
+
+## Backend Setup
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/your-username/your-repository-name.git
+cd your-repository-name
+```
