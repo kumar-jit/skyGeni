@@ -21,7 +21,7 @@ const DonutChart = ({
             .attr("height", height)
             .append("g")
             .attr("transform", `translate(${width / 2}, ${height / 2})`);
-
+        //tooltip for showing data on hover
         const tooltip = d3
             .select("body")
             .append("div")
@@ -38,6 +38,7 @@ const DonutChart = ({
             .style("color", "#333")
             .style("box-shadow", "0 2px 6px rgba(0,0,0,0.15)");
 
+        // Set up the pie chart
         const pie = d3
             .pie()
             .value((d) => d.acv)
@@ -55,6 +56,7 @@ const DonutChart = ({
         //custom colors
         const color = (d) => collerPalette[d.name] || "#999";
 
+        // Draw the arcs
         chartGroup
             .selectAll("path")
             .data(arcs)
@@ -82,6 +84,7 @@ const DonutChart = ({
 
         const placedLabels = [];
 
+        // Draw the labels
         chartGroup
             .selectAll("text")
             .data(arcs)
@@ -101,7 +104,6 @@ const DonutChart = ({
                 (d.endAngle + d.startAngle) / 2 > Math.PI ? "end" : "start"
             )
             .text((d) => {
-
                 const posY = d.labelPos[1].toFixed(3);
                 const posX = d.labelPos[0].toFixed(3);
                 // checking for overlap
@@ -116,13 +118,16 @@ const DonutChart = ({
                     }
                     return false;
                 };
+                // check for overlap and push the label position to the array
                 let isOverlap = checkOverlap(posX, posY);
                 placedLabels.push({
                     posY: posY,
                     posX: posX,
                 });
+                // if overlap, return first two characters of the name with ".."
+                // else return the name
                 let text = `${formatCurrency(d.data.acv)}
-                (${d.data.percentage}%)`
+                (${d.data.percentage}%)`;
                 return isOverlap ? text.charAt(1) + ".." : text;
             })
             .on("mouseover", function (event, d) {
@@ -141,6 +146,7 @@ const DonutChart = ({
                 tooltip.transition().duration(200).style("opacity", 0);
             });
 
+        // Draw the lines connecting the labels to the arcs
         chartGroup
             .selectAll("polyline")
             .data(arcs)
@@ -156,6 +162,7 @@ const DonutChart = ({
             .style("stroke", "#999")
             .style("stroke-width", 1.2);
 
+        // Draw the center text
         chartGroup
             .append("text")
             .attr("text-anchor", "middle")
@@ -164,7 +171,7 @@ const DonutChart = ({
             .style("font-family", "Roboto")
             .style("font-weight", "bold")
             .text("Total");
-
+        // Draw the center value
         chartGroup
             .append("text")
             .attr("text-anchor", "middle")

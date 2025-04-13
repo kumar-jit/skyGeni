@@ -13,7 +13,7 @@ const BarChart = ({data, collerPalette, widthP, heightP}) => {
 
         const margin = { top: 30, right: 20, bottom: 50, left: 70 };
 
-        // === Tooltip element ===
+        //tooltip for showing data on hover
         const tooltip = d3
             .select("body")
             .append("div")
@@ -30,19 +30,20 @@ const BarChart = ({data, collerPalette, widthP, heightP}) => {
             .style("color", "#333")
             .style("box-shadow", "0 2px 6px rgba(0,0,0,0.15)");
 
+        // Set up the scales
         const x = d3
             .scaleBand()
-            .domain(stackedData.map((d) => d.quarter))
-            .range([margin.left, width - margin.right])
+            .domain(stackedData.map((d) => d.quarter)) // Use quarter as x-axis
+            .range([margin.left, width - margin.right]) 
             .padding(0.5);
 
+        // Set up the y-axis scale
         const y = d3
             .scaleLinear()
             .domain([0, d3.max(stackedData, (d) => d.total)])
             .nice()
             .range([height - margin.bottom, margin.top]);
 
-        const color = d3.scaleOrdinal(d3.schemeTableau10);
         const formatDollar = d3.format("~s");
 
         // Draw horizontal lines for better scale perception
@@ -68,6 +69,7 @@ const BarChart = ({data, collerPalette, widthP, heightP}) => {
                 const g = d3.select(this);
                 let yOffset = y(0);
 
+                // Each team bar segment
                 d.yAxisData?.forEach((entry, i) => {
                     const barHeight = y(0) - y(entry.acv);
                     yOffset -= barHeight;
@@ -82,16 +84,16 @@ const BarChart = ({data, collerPalette, widthP, heightP}) => {
                         })
                         .on("mousemove", (event) => {
                             tooltip
-                                .html(`
+                                .html(`         
                                     <strong>${entry.name}</strong><br/>
                                     ACV: ${formatCurrency(entry.acv)}<br/>
                                     Percentage: ${entry.persentage}%<br/>
-                                `)
+                                `)  // Use template literals for multiline tooltip
                                 .style("left", (event.pageX + 10) + "px")
                                 .style("top", (event.pageY - 28) + "px");
                         })
                         .on("mouseout", () => {
-                            tooltip.transition().duration(300).style("opacity", 0);
+                            tooltip.transition().duration(300).style("opacity", 0); 
                         });
 
                     // Label inside segment
@@ -103,13 +105,7 @@ const BarChart = ({data, collerPalette, widthP, heightP}) => {
                         .attr("dy", "0.35em")
                         .style("fill", "white")
                         .style("font-size", "10px")
-                        .text(
-                            () => {
-                                
-                        
-                                return `${formatCurrency(entry.acv)} \n (${entry.persentage.toFixed(0)}%)`;
-                            }
-                        );
+                        .text(`${formatCurrency(entry.acv)} \n (${entry.persentage.toFixed(0)}%)`);
                 });
 
                 // Total label
@@ -119,17 +115,14 @@ const BarChart = ({data, collerPalette, widthP, heightP}) => {
                     .attr("text-anchor", "middle")
                     .style("font-size", "12px")
                     .style("fill", "#333")
-                    .text(
-                        () => {
-                            return `${formatCurrency(d.total)}`;
-                        }
-                    );
+                    .text(`${formatCurrency(d.total)}`);
             });
 
+        // Draw x-axis
         svg.append("g")
             .attr("transform", `translate(0,${height - margin.bottom})`)
             .call(d3.axisBottom(x));
-
+        
         svg.append("g")
             .attr("transform", `translate(${margin.left},0)`)
             .call(d3.axisLeft(y).tickFormat((d) => `$${formatDollar(d)}`));

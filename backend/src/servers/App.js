@@ -35,6 +35,18 @@ App.get("/", (req, res) => {
     res.send("Server is running");
 });
 
+App.get("/tabs", (req, res) => {
+    res.send(
+    {   "success": true,
+        tabs: [
+            { key: 0, path: "/team",name: "Team" },
+            { key: 1, path: "/customer", name: "Customer Type" },
+            { key: 2, path: "/acvRange", name: "ACV Range" },
+            { key: 3, path: "/account", name: "Account Industry" },
+        ],
+        url: req.originalUrl
+    });
+});
 
 // setup routes
 App.use("/api/team", teamRouter);

@@ -13,21 +13,26 @@ import TableGroupHeader from "../TableParts/TableGroupHeader";
 import TableSubHeader from "../TableParts/TableSubHeaders";
 import TableRowContent from "../TableParts/TableRowContent";
 
-export default function ChartDetailInfoTable({tableData}) {
+export default function ChartDetailInfoTable({ tableData }) {
     let fontsDetails = {
         fontWeight: "bold",
-        fontSize: "0.7rem"
-    }
+        fontSize: "0.7rem",
+    };
 
     // Check if tableData is null or empty
-    if (!tableData || Object.keys(tableData).length == 0) return null; 
+    if (!tableData || Object.keys(tableData).length == 0) return null;
 
     // prepare subHeaders for the table
-    const subHeaders = [{key : tableData.tableName, value : tableData.tableName}]
+    const subHeaders = [
+        { key: tableData.tableName, value: tableData.tableName },
+    ];
     tableData.colHeaders?.forEach((header) => {
-        subHeaders.push({key : header + "_opps", value : "# of Opps"});        
-        subHeaders.push({key : header + "_acv", value : "ACV" + (header === "Total" ? " ↓" : "")});
-        subHeaders.push({key : header + "_percent", value : "% of Total"});
+        subHeaders.push({ key: header + "_opps", value: "# of Opps" });
+        subHeaders.push({
+            key: header + "_acv",
+            value: "ACV" + (header === "Total" ? " ↓" : ""),
+        });
+        subHeaders.push({ key: header + "_percent", value: "% of Total" });
     });
 
     return (
@@ -39,7 +44,6 @@ export default function ChartDetailInfoTable({tableData}) {
                         border: "1px solid #ccc",
                         padding: "2px 6px",
                     },
-    
                 }}
                 aria-label="tight bordered table"
             >
@@ -47,12 +51,12 @@ export default function ChartDetailInfoTable({tableData}) {
                     <TableGroupHeader
                         colHeaders={tableData.colHeaders}
                         altHeaderColors={["#4471c4", "#5b9bd5"]}
-                        sx={{...fontsDetails}}
+                        sx={{ ...fontsDetails }}
                         columnHeading="Closed Fiscal Year"
                     />
                     <TableSubHeader
                         subHeaders={subHeaders}
-                        sx={{...fontsDetails}}
+                        sx={{ ...fontsDetails }}
                     />
                 </TableHead>
                 <TableBody>
