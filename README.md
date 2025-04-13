@@ -19,10 +19,14 @@ The **backend** runs on port `8100` and the **frontend** runs on port `5173`.
 ### Account Industry
 ![image](https://github.com/user-attachments/assets/9b91a1e5-bd29-4577-8493-6a4ffc41a56d)
 
-## Backend Setup
+## Run Backend
 
-### 1. Clone the repository
 ```bash
-git clone https://github.com/your-username/your-repository-name.git
-cd your-repository-name
+    nodemon server.js
 ```
+## Run Frontend
+```bash
+    npm run dev
+
+```
+
