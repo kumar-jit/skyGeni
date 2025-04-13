@@ -1,6 +1,12 @@
 import { customerGetAllDataRepo,CustomerColorPaletteRepo } from "../model/customer.repository.js";
 import { groupQuarterDataForChart, groupQuarterDataForDoughnut,groupQuarterDataForTable } from "../utils/groupData.js";
- 
+
+/**
+    * @description This function is used to get the customer table data.
+    * @param {*} req 
+    * @param {*} res 
+    * @param {*} next 
+    */
 export const customerBarChartController = async (req, res, next) => {
     try {
         const data = await customerGetAllDataRepo();
@@ -10,7 +16,12 @@ export const customerBarChartController = async (req, res, next) => {
         next(error);
     }
 }
-
+/**
+    * @description This function is used to get the customer table data.
+    * @param {*} req 
+    * @param {*} res 
+    * @param {*} next 
+    */
 export const customerBarChartDoughnutController = async (req, res, next) => {
     try {
         const data = await customerGetAllDataRepo();
@@ -20,7 +31,12 @@ export const customerBarChartDoughnutController = async (req, res, next) => {
         next(error);
     }
 }
-
+/**
+    * @description This function is used to get the customer table data.
+    * @param {*} req 
+    * @param {*} res 
+    * @param {*} next 
+    */
 export const customerTableInfoController = async (req, res, next) => {
     try {
         const data = await customerGetAllDataRepo();
@@ -30,7 +46,12 @@ export const customerTableInfoController = async (req, res, next) => {
         next(error);
     }
 }
-
+/**
+    * @description This function is used to get the customer table data.
+    * @param {*} req 
+    * @param {*} res 
+    * @param {*} next 
+    */
 export const getCollerPaletteController = async (req, res, next) => {
     try {
         const data = await CustomerColorPaletteRepo();

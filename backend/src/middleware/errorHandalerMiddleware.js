@@ -1,5 +1,13 @@
 import { logger } from "./loggerHandalerMiddleware.js";
 
+/**
+ * @description Middleware for handling errors in Express.js applications.
+ * This middleware captures errors thrown in the application and sends a standardized error response to the client.
+ * @param {*} err 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 export const errorHandlerMiddleware = (err, req, res, next) => {
 
     let message = `${err.message || "server error! Try later!!" } , requestUrl : ${req.originalUrl}`; 

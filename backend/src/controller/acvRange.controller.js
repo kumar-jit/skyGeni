@@ -2,6 +2,12 @@ import { acvRangeGetAllDataRepo,acvRangeColorPaletteRepo } from "../model/acvRan
 import { groupQuarterDataForChart, groupQuarterDataForDoughnut, groupQuarterDataForTable } from "../utils/groupData.js";
 
 
+/**
+ * @description This function is used to get the acv range bar chart data.
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 export const acvRangeBarChartController = async (req, res, next) => {
     try {
         const data = await acvRangeGetAllDataRepo();
@@ -11,6 +17,13 @@ export const acvRangeBarChartController = async (req, res, next) => {
         next(error);
     }
 }
+
+/**
+ * @description This function is used to get the acv range bar chart data.
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 export const acvRangeDoughnutController = async (req, res, next) => {
     try {
         const data = await acvRangeGetAllDataRepo();
@@ -21,6 +34,12 @@ export const acvRangeDoughnutController = async (req, res, next) => {
     }
 }
 
+/**
+ * @description This function is used to get the acv range bar chart data.
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 export const acvRangeTableInfoController = async (req, res, next) => {
     try {
         const data = await acvRangeGetAllDataRepo();
@@ -30,6 +49,12 @@ export const acvRangeTableInfoController = async (req, res, next) => {
         next(error);
     }
 }
+/**
+ * @description This function is used to get the acv range bar chart data.
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 export const getCollerPaletteController = async (req, res, next) => {
     try {
         const data = await acvRangeColorPaletteRepo();
