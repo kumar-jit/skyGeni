@@ -108,7 +108,6 @@ const DonutChart = ({
                 // if overlap, return first two characters of the name with ".."
                 const checkOverlap = function (posX, posY) {
                     for (let i = 0; i < placedLabels.length; i++) {
-                        console.log("posX: ", posX, "posY: ", posY);
                         if (
                             Math.abs(placedLabels[i].posY - posY) < 60 &&
                             Math.abs(placedLabels[i].posX - posX) < 30

@@ -1,45 +1,3 @@
-// export const groupQuarterData = (data, xAxisName, yAxisName) => {
-//     const grouped = {};
-//     data.forEach((item) => {
-//         const xValue = item[xAxisName];
-//         const yValue = item[yAxisName];
-//         const value = item.acv;
-
-//         if (!grouped[xValue]) {
-//             grouped[xValue] = {
-//                 quarter: xValue,
-//                 yAxisData: {},
-//                 total: 0,
-//             };
-//         }
-
-//         if (!grouped[xValue].yAxisData[yValue]) {
-//             grouped[xValue].yAxisData[yValue] = 0;
-//         }
-
-//         grouped[xValue].yAxisData[yValue] += value;
-//         grouped[xValue].total += value;
-//     });
-
-//     return Object.values(grouped).map((group) => {
-//         const { quarter, yAxisData, total } = group;
-//         const yAxisArray = Object.entries(yAxisData).map(([name, value]) => ({
-//             name,
-//             value: parseFloat(value.toFixed(2)),
-//             persentage: (value / total) * 100,
-//         }));
-
-//         return {
-//             quarter,
-//             yAxisData: yAxisArray.map((entry) => ({
-//                 ...entry,
-//                 persentage: parseFloat(entry.persentage.toFixed(15)), // Optional: adjust precision
-//             })),
-//             total: parseFloat(total.toFixed(2)),
-//         };
-//     });
-// };
-
 
 export const groupQuarterDataForChart = (data, xAxisName, yAxisName) =>{
     const grouped = {};
@@ -103,6 +61,13 @@ export const groupQuarterDataForChart = (data, xAxisName, yAxisName) =>{
     });
 }
 
+/**
+ * @description This function is used to group the data for the doughnut chart and calculate the total acv and percentage for each quarter.
+ * @param {Array} data the data to be grouped
+ * @param {String} groupedFieldName field name for grouping
+ * @param {String} metricField field name for metric
+ * @returns 
+ */
 export const groupQuarterDataForDoughnut = (data, groupedFieldName, metricField) => {
     const result = {
       totalAcv: 0,
@@ -136,5 +101,128 @@ export const groupQuarterDataForDoughnut = (data, groupedFieldName, metricField)
     }
   
     return result;
-  }
-  
+}
+
+
+/**
+ * @description This function is used to group the data for the table and calculate the total acv and count for each quarter and metric.
+ * @param {Array} data the data to be grouped
+ * @param {String} quarterField field name for quarter
+ * @param {String} metricField field name for metric
+ * @param {String} tableName field name for table
+ * @returns 
+ */
+export const groupQuarterDataForTable = (data=[], quarterField, metricField, tableName) => {
+    // need for table header
+    const listOfQuarter = [];
+    const listOfMetric = [];
+
+    // need for table data
+    const tableData = [];
+
+    const grouopByQuarter = {};
+    // to calculate total acv and count for last column "Total"
+    const groupByMetric = {};
+
+    // sum of all acv, and count for last column "Total"
+    let sumOfAcv = 0, sumOfCount = 0, umOfPercentage = 0;
+
+    data.forEach(item => {
+
+        // stage 1 grouping by quarter
+        // if quarter is not present in the object, then create a new object for that quarter
+        if(!grouopByQuarter[item[quarterField]]){
+            grouopByQuarter[item[quarterField]] = {
+                totalAcv: item['acv'],
+                percentage: 100,
+                totalCount: item['count'],
+                metricsObject: {
+                    [item[metricField]]: {
+                        acv: item['acv'],
+                        percentage: 0,
+                        count: item['count']
+                    }
+                }
+            };
+            listOfQuarter.push(item[quarterField]);
+        }
+        else{
+            grouopByQuarter[item[quarterField]].totalAcv += item['acv'];
+            grouopByQuarter[item[quarterField]].totalCount += item['count'];
+            grouopByQuarter[item[quarterField]].metricsObject[item[metricField]] = {
+                acv: item['acv'],
+                percentage: 0,
+                count: item['count']
+            }
+        }
+        
+        // stage 2 grouping by metric
+        // if metric is not present in the object, then create a new object for that metric
+        if(!groupByMetric[item[metricField]]){
+            groupByMetric[item[metricField]] = {
+                totalAcv: item['acv'],
+                percentage: 0,
+                totalCount: item['count'],
+            };
+            listOfMetric.push(item[metricField]);
+        }
+        else{
+            groupByMetric[item[metricField]].totalAcv += item['acv'];
+            groupByMetric[item[metricField]].totalCount += item['count'];
+        }
+
+        sumOfAcv += item['acv'];    // sum of acv for last column "Total"
+        sumOfCount += item['count']; // sum of count for last column "Total"
+    })
+
+    // stage 3 calculate percentage for each quarter and metric and preapring row data
+    Object.entries(groupByMetric).map(([metricKey, value]) => {
+        let row = {};
+        row['rowName'] = metricKey;
+
+        // preapring row data on the basis of quarter and metric
+        Object.entries(grouopByQuarter).map(([quarter, quarterValue]) => {
+            let cellCount = 0, cellAcv = 0, cellPercentage = 0;
+            if(quarterValue['metricsObject'][metricKey]){
+                cellCount = quarterValue['metricsObject'][metricKey]['count'];
+                cellAcv = quarterValue['metricsObject'][metricKey]['acv'];
+                cellPercentage = Math.round((cellAcv / quarterValue.totalAcv) * 100);
+            }
+            row[`${quarter}_Opps`] = cellCount;
+            row[`${quarter}_ACV`] = cellAcv;
+            row[`${quarter}_PercenOfTotal`] = cellPercentage;
+        });
+
+        // total column data calculation
+        row['Total_Opps'] = value.totalCount;
+        row['Total_ACV'] = value.totalAcv;
+        row['Total_PercenOfTotal'] = Math.round((value.totalAcv / sumOfAcv) * 100);
+
+        tableData.push(row);
+    });
+
+    // calculate total row data
+    let totalRow = {};
+    totalRow['rowName'] = 'Total';
+    Object.entries(grouopByQuarter).map(([quarter, quarterValue]) => {
+        totalRow[`${quarter}_Opps`] = quarterValue.totalCount;
+        totalRow[`${quarter}_ACV`] = quarterValue.totalAcv;
+        totalRow[`${quarter}_PercenOfTotal`] = 100;
+    });
+
+    // total column data calculation
+    totalRow['Total_Opps'] = sumOfCount;
+    totalRow['Total_ACV'] = sumOfAcv;
+    totalRow['Total_PercenOfTotal'] = 100;
+
+    // add the last row "Total" to the table data
+    tableData.push(totalRow); 
+    listOfQuarter.push('Total');
+
+    return {
+        colHeaders: listOfQuarter,
+        rowHeaders: listOfMetric,
+        tableContent: tableData,
+        tableName: tableName
+    }
+}

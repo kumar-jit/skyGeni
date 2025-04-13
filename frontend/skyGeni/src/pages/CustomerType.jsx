@@ -1,11 +1,10 @@
 import { connect } from "react-redux";
-// import BarCharts from "../components/cards/barChart"
 import { customerTypeReducerInitialLoadThunk } from "../redux/reducers/CustomerReducer";
 import { useEffect } from "react";
 import PageSkeleton from "../components/PageSkeleton/PageSkeleton";
 
 const CustomerType = (props) => {
-    const { barChartData, inittialDataLoad, collerPalette, doughnutChartData } = props;
+    const { barChartData, inittialDataLoad, collerPalette, doughnutChartData,tableData } = props;
     let width = {
         barChart: 800,
         card: 400,
@@ -25,6 +24,7 @@ const CustomerType = (props) => {
             barChartData={barChartData}
             collerPalette={collerPalette}
             doughnutChartData={doughnutChartData}
+            tableData={tableData}
             width={width}
             height={height}
             heading="Cust Type"
@@ -36,6 +36,7 @@ const mapStateToProps = (state) => ({
     barChartData: state.customerTypeReducer?.barChartData,
     collerPalette: state.customerTypeReducer.collerPalette,
     doughnutChartData: state.customerTypeReducer.doughnutChartData,
+    tableData: state.customerTypeReducer.tableData,
 });
 const mapDispatchToProps = (dispatch) => ({
     inittialDataLoad: () => dispatch(customerTypeReducerInitialLoadThunk()),

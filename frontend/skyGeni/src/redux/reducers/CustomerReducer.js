@@ -2,11 +2,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const INITIAL_STATE = {barChartData : [], collerPalette: {},doughnutChartData: {}};
+const INITIAL_STATE = {barChartData : [], collerPalette: {},doughnutChartData: {}, tableData:{}};
 
 export const customerTypeReducerInitialLoadThunk = createAsyncThunk( "customerType/getInitialState", async (arg, thankAPI) => {
     try {
-        let paths = ["barChart","collerPalette","doughnutChart"];
+        let paths = ["barChart","collerPalette","doughnutChart","tableData"];
         let reqs = paths.map(path => axios.get(`http://localhost:8100/api/customer/${path}`));
         let responses = await Promise.all(reqs);
 
@@ -16,7 +16,6 @@ export const customerTypeReducerInitialLoadThunk = createAsyncThunk( "customerTy
             return acc;
         },{});
 
-        // let res = await axios.get("http://localhost:8100/api/customer/barChart");
         thankAPI.dispatch(initialLoad(finalData)) 
     } catch (error) {
       thankAPI.dispatch(initialLoad([]))   
@@ -31,6 +30,7 @@ const customerSlice = createSlice({
             state.barChartData = action.payload.barChart? [...action.payload.barChart] : []
             state.collerPalette = action.payload.collerPalette? {...action.payload.collerPalette} : {}
             state.doughnutChartData = action.payload.doughnutChart? {...action.payload.doughnutChart} : {};
+            state.tableData = action.payload.tableData? {...action.payload.tableData} : {};
         }
      },
 })
