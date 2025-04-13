@@ -63,3 +63,28 @@ export const getCollerPaletteController = async (req, res, next) => {
         next(error);
     }
 }
+
+/**
+ * @description This function is used to get all the data for the acv range.
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+export const getAllData = async (req, res, next) => {
+    try {
+        const data = await acvRangeGetAllDataRepo();
+        const barChartData = groupQuarterDataForChart(data, "closed_fiscal_quarter", "ACV_Range");  
+        const doughnutData = groupQuarterDataForDoughnut(data, "ACV_Range", "acv");
+        const tableData = groupQuarterDataForTable(data, "closed_fiscal_quarter", "ACV_Range", "ACV Range");
+        const collerPalette = await acvRangeColorPaletteRepo();
+
+        res.status(200).json({success : true, data: {
+            barChartData,
+            doughnutData,
+            tableData,
+            collerPalette
+        }, url: req.originalUrl});
+    } catch (error) {
+        next(error);
+    }
+}

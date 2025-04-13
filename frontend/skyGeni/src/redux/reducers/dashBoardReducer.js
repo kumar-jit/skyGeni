@@ -17,17 +17,9 @@ export const loadInitialDataThunk = createAsyncThunk( "dashBoard/getInitialState
 
 export const chartsDataLoadThunk = createAsyncThunk( "dashBoard/loadChart", async (arg, thankAPI) => {
     try {
-        let paths = ["barChart","collerPalette","doughnutChart","tableData"];
-        let reqs = paths.map(path => axios.get(`http://localhost:8100/api${arg}/${path}`));
-        let responses = await Promise.all(reqs);
+        let responses = await  axios.get(`http://localhost:8100/api${arg}?`);
 
-        let finalData = responses.reduce((acc, res) => {
-            let path = res.data?.url?.split("/")?.pop();
-            acc[path] = res.data.data;
-            return acc;
-        },{});
-
-        return finalData;
+        return responses.data.data;
     } catch (error) {
       thankAPI.dispatch(clearData([]))   
     }
@@ -50,9 +42,9 @@ const dashBoardSlice = createSlice({
      extraReducers: (builder) => {
         builder
             .addCase(chartsDataLoadThunk.fulfilled, (state, action) => {
-                state.barChartData = action.payload.barChart? [...action.payload.barChart] : [];
+                state.barChartData = action.payload.barChartData? [...action.payload.barChartData] : [];
                 state.collerPalette = action.payload.collerPalette? {...action.payload.collerPalette} : {};
-                state.doughnutChartData = action.payload.doughnutChart? {...action.payload.doughnutChart} : {};
+                state.doughnutChartData = action.payload.doughnutData? {...action.payload.doughnutData} : {};
                 state.tableData = action.payload.tableData? {...action.payload.tableData} : {};
             })
      }
